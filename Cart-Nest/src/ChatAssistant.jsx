@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function ChatAssistant({ products, addToCart }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hi! Looking for a gift or product?" },s
+    { sender: "bot", text: "Hi! Looking for a gift or product?" },
   ]);
   const [input, setInput] = useState("");
 
