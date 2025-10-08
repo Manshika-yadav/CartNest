@@ -42,7 +42,6 @@ function Home({ filteredProducts, addToCart }) {
               whileHover={{ scale: 1.05 }}
               className="rounded-xl shadow-md p-4 bg-white flex flex-col relative overflow-hidden"
             >
-              
               <FaCube className="absolute top-2 right-2 text-gray-400 text-xl" />
 
               <img
