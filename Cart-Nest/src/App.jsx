@@ -34,12 +34,10 @@ function Layout({
         draggable
         theme="colored"
       />
-
-      {/* NAVBAR */}
       <nav className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
+           
             <div className="flex-shrink-0">
               <h1 className="text-2xl sm:text-3xl font-bold text-white">CartNest</h1>
             </div>
@@ -76,7 +74,6 @@ function Layout({
               </button>
             </div>
 
-            {/* Mobile Hamburger */}
             <div className="md:hidden">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -129,10 +126,8 @@ function Layout({
       )}
       </nav>
 
-      {/* MAIN CONTENT */}
       <main className="flex-1 p-6">{children}</main>
 
-      {/* FOOTER */}
       <footer className="bg-gray-100 text-gray-700 text-center py-4 mt-auto">
         <p className="text-sm">
           © {new Date().getFullYear()} CartNest. All rights reserved.
