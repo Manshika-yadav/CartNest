@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,6 +21,8 @@ function Layout({
   setIsOpen,
   theme
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div className={`flex flex-col min-h-screen transition-colors ${theme.bg} ${theme.text}`}>
       <ToastContainer
@@ -32,38 +34,114 @@ function Layout({
         draggable
         theme="colored"
       />
-      <nav className="bg-gradient-to-r from-indigo-300 to-sky-200 shadow-md sticky top-0 z-10 p-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">CartNest</h1>
-        <div className="flex gap-3">
-          <button
-            onClick={() => setView("home")}
-            className="bg-gray-100 px-3 py-2 rounded-lg shadow hover:bg-gray-200"
-          >
-            Home
-          </button>
-          <button
-            onClick={() => setView("cart")}
-            className="bg-gray-100 px-3 py-2 rounded-lg shadow hover:bg-gray-200"
-          >
-            Cart ({cart.length})
-          </button>
-          <button
-            onClick={() => setView("orders")}
-            className="bg-gray-100 px-3 py-2 rounded-lg shadow hover:bg-gray-200"
-          >
-            Orders
-          </button>
+
+      {/* NAVBAR */}
+      <nav className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 shadow-md sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">CartNest</h1>
+            </div>
+
+           
+            <div className="hidden md:flex md:items-center md:space-x-4 flex-1 justify-center">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-80 px-4 py-2 rounded-full border border-gray-200 bg-white/80 
+                  focus:outline-none focus:ring-2 focus:ring-indigo-400 shadow-sm backdrop-blur-sm"
+                />
+              </div>
+              <button
+                onClick={() => setView("home")}
+                className="bg-white text-blue-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => setView("cart")}
+                className="bg-white text-blue-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
+              >
+                Cart ({cart.length})
+              </button>
+              <button
+                onClick={() => setView("orders")}
+                className="bg-white text-blue-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
+              >
+                Orders
+              </button>
+            </div>
+
+            {/* Mobile Hamburger */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-white text-3xl focus:outline-none"
+              >
+                ☰
+              </button>
+            </div>
+          </div>
         </div>
+
+      {menuOpen && (
+      <div className="md:hidden px-4 pb-4 space-y-3 bg-blue-600">
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full px-4 py-2 rounded-full border border-gray-200 bg-white/80 
+        focus:outline-none focus:ring-2 focus:ring-indigo-400 shadow-sm backdrop-blur-sm"
+      />
+      <button
+      onClick={() => {
+        setView("home");
+        setMenuOpen(false);
+      }}
+      className="w-full bg-white text-blue-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
+      >
+      Home
+      </button>
+      <button
+      onClick={() => {
+        setView("cart");
+        setMenuOpen(false);
+      }}
+      className="w-full bg-white text-blue-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
+      >
+        Cart ({cart.length})
+      </button>
+      <button
+      onClick={() => {
+        setView("orders");
+        setMenuOpen(false);
+      }}
+      className="w-full bg-white text-blue-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
+      >
+         Orders
+      </button>
+      </div>
+      )}
       </nav>
 
+      {/* MAIN CONTENT */}
       <main className="flex-1 p-6">{children}</main>
 
-      <footer className="bg-gray-200 text-gray-700 text-center py-4 mt-auto">
-        <p className="text-sm">© {new Date().getFullYear()} CartNest. All rights reserved.</p>
+      {/* FOOTER */}
+      <footer className="bg-gray-100 text-gray-700 text-center py-4 mt-auto">
+        <p className="text-sm">
+          © {new Date().getFullYear()} CartNest. All rights reserved.
+        </p>
       </footer>
     </div>
   );
 }
+
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -80,7 +158,6 @@ function App() {
   const [points, setPoints] = useState(0);
   const [spinOpen, setSpinOpen] = useState(false);
 
-  
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
     setConfirmedOrders(JSON.parse(localStorage.getItem("confirmedOrders")) || []);
@@ -126,13 +203,12 @@ function App() {
     setQuantities(prev => ({ ...prev, [product.id]: 1 }));
     setPaymentMethod(prev => ({ ...prev, [product.id]: "cod" }));
     toast.success("Product added to cart!");
-    setPoints(prev => prev + 10); 
+    setPoints(prev => prev + 10);
 
     if (Math.random() > 0.5) {
       toast.info(`Customers usually buy 2 of this item. Want to add 2?`);
     }
 
-    
     if (Math.random() > 0.7) setSpinOpen(true);
   };
 
@@ -155,12 +231,12 @@ function App() {
       price: item.price,
       total: item.price * (quantities[item.id] || 1),
       paymentMethod: paymentMethod[item.id] || "cod",
-      delivery: `${Math.floor(Math.random() * 5) + 2} days` 
+      delivery: `${Math.floor(Math.random() * 5) + 2} days`
     };
     setConfirmedOrders(prev => [...prev, confirmedOrder]);
     removeFromCart(item.id);
     toast.success("Order placed successfully!");
-    setPoints(prev => prev + 20); 
+    setPoints(prev => prev + 20);
   };
 
   if (loading)
@@ -201,10 +277,14 @@ function App() {
           />
         )}
         {view === "orders" && (
-          <Orders confirmedOrders={confirmedOrders} removeOrder={(id) => {
-            setConfirmedOrders(prev => prev.filter(order => order.id !== id));
-            toast.info("Order removed!");
-          }} points={points} />
+          <Orders
+            confirmedOrders={confirmedOrders}
+            removeOrder={(id) => {
+              setConfirmedOrders(prev => prev.filter(order => order.id !== id));
+              toast.info("Order removed!");
+            }}
+            points={points}
+          />
         )}
       </Layout>
 
@@ -215,5 +295,6 @@ function App() {
 }
 
 export default App;
+
 
 
