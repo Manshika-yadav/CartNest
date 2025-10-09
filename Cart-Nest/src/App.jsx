@@ -32,7 +32,7 @@ function Layout({
         draggable
         theme="colored"
       />
-      <nav className="bg-gradient-to-r from-gray-200 to-gray-300 shadow-md sticky top-0 z-10 p-4 flex justify-between items-center">
+      <nav className="bg-gradient-to-r from-indigo-300 to-sky-200 shadow-md sticky top-0 z-10 p-4 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800">CartNest</h1>
         <div className="flex gap-3">
           <button
